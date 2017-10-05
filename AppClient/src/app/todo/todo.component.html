@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-sm-12 col-md-10 col-md-offset-1">
+    <section class="todoapp">
+      <header class="header">
+        <h1>Todo List</h1>
+        <input class="new-todo" placeholder="Do anything, save to lie down and die!" [(ngModel)]="newTodo" (keyup.enter)="addTodo()" autofocus>
+      </header>
+
+      <!-- This section should be hidden by default and shown when there are todos -->
+      <section class="main">
+        <ul class="todo-list">
+          <!-- These are here just to show the structure of the list items -->
+          <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+          <li *ngFor="let todo of todos" [ngClass]="{completed: todo.isComplete, editing: todo.editing}">
+            <div class="view">
+              <input class="toggle" type="checkbox" [checked]="todo.isComplete" (change)="todo.isComplete = !todo.isComplete">
+              <label (dblclick)="todo.editing = true">{{todo.title}}</label>
+              <button class="destroy" (click)="destroyTodo(todo)"></button>
+            </div>
+            <input class="edit" #updatedTodo [value]="todo.title" (blur)="updateTodo(todo, updatedTodo.value)" (keyup.escape)="todo.editing = false"
+              (keyup.enter)="updateTodo(todo, updatedTodo.value)">
+          </li>
+        </ul>
+      </section>
+
+      <!-- This footer should hidden by default and shown when there are todos -->
+      <footer class="footer">
+        <!-- This should be `0 items left` by default -->
+        <span class="todo-count"><strong>{{(todos?.length && todos.length !== 0)? todos.length : '' }}</strong> 
+          {{(todos?.length && todos.length == 1) ? ' task' : ( todos?.length !== 0 ? ' tasks' : ' Add new tasks')}}</span>
+        <!-- Remove this if you don't implement routing -->
+        <ul class="filters">
+          <li>
+            <a [routerLink]="['/all']" [class.selected]="path === 'all'">All</a>
+          </li>
+          <li>
+            <a [routerLink]="['/pending']" [class.selected]="path === 'pending'">Pending</a>
+          </li>
+          <li>
+            <a [routerLink]="['/completed']" [class.selected]="path === 'completed'">Completed</a>
+          </li>
+          <li>
+            <button (click)="toggleSelectAll()" [ngClass]="selectAllToggle ? 'select-green' : 'select-red'">Select_All</button>
+          </li>
+          <li>
+            <button (click)="saveTodoList()" [ngClass]="'select-blue'">Save</button>
+          </li>
+          <li>
+            <button (click)="fetchTodoList()" [ngClass]="'select-green'">Retrieve</button>
+          </li>
+        </ul>
+        <!-- Hidden if no completed items are left ↓ -->
+        <button class="clear-completed" (click)="clearCompleted()">Remove Completed</button>
+      </footer>
+    </section>
+  </div>
+</div>
