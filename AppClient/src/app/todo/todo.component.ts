@@ -83,7 +83,8 @@ export class TodoComponent implements OnInit {
   createDTO(todoList: any[]): Todo[] {
     const todoListDTO: Todo[] = [];
     todoList.forEach(todo => {
-      todoListDTO.push(new Todo(todo._id, todo.title, todo.isComplete));
+      console.log(todo);
+      todoListDTO.push(new Todo(todo.id, todo.title, todo.isComplete));
     });
     return todoListDTO;
   }
